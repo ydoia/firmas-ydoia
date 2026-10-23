@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- BLINDAJE ANTI-INDEXACIÓN TOTAL -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="googlebot" content="noindex, nofollow, noarchive">
+  <meta name="bingbot" content="noindex, nofollow">
+  
   <title>Firmas YDOIA Dental — Equipo Comercial</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,8 +19,94 @@
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: #f8fafc;
       color: #0f172a;
-      padding: 40px 20px 80px;
+      min-height: 100vh;
       line-height: 1.5;
+    }
+    
+    /* MODAL DE CONTRASEÑA */
+    #lock-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 20px;
+    }
+    .lock-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .lock-logo {
+      height: 42px;
+      width: auto;
+      margin-bottom: 24px;
+    }
+    .lock-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #014c6b;
+      margin-bottom: 6px;
+    }
+    .lock-desc {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+    .lock-input {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.2s;
+      text-align: center;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+      font-family: inherit;
+    }
+    .lock-input:focus {
+      border-color: #014c6b;
+      box-shadow: 0 0 0 3px rgba(1, 76, 107, 0.15);
+    }
+    .lock-btn {
+      width: 100%;
+      padding: 14px;
+      background: #014c6b;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lock-btn:hover {
+      background: #023850;
+      transform: translateY(-1px);
+    }
+    .lock-error {
+      color: #ef4444;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* CONTENEDOR PRINCIPAL (Oculto hasta validar contraseña) */
+    #main-content {
+      display: none;
+      padding: 40px 20px 80px;
     }
     .container {
       max-width: 820px;
@@ -277,53 +369,70 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <!-- LOGO YDOIA COMPLETO -->
-      <div class="brand-top">
-        <img src="./logo-ydoia-completo.png" alt="YDOIA" onerror="this.src='https://assets.cdn.filesafe.space/b9MZrHFEFybhjFoIFP6W/media/69f3580914daed238d4bd583.png'" />
-      </div>
 
-      <!-- GOHIGHLEVEL BADGE OFICIAL -->
-      <div class="ghl-badge-wrapper">
-        <svg class="ghl-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100" height="100" rx="20" fill="#0f172a"/>
-          <path d="M22 34L50 20L78 34L50 48L22 34Z" fill="#3B82F6"/>
-          <path d="M22 52L50 38L78 52L50 66L22 52Z" fill="#0EA5E9"/>
-          <path d="M22 70L50 56L78 70L50 84L22 70Z" fill="#F97316"/>
-        </svg>
-        <span class="ghl-text">GoHighLevel • Configuración de Firma Oficial</span>
-      </div>
+  <!-- PANTALLA DE BLOQUEO POR CONTRASEÑA -->
+  <div id="lock-screen">
+    <div class="lock-card">
+      <img src="./logo-ydoia-completo.png" alt="YDOIA" class="lock-logo" onerror="this.src='https://assets.cdn.filesafe.space/b9MZrHFEFybhjFoIFP6W/media/69f3580914daed238d4bd583.png'">
+      <div class="lock-title">Acceso de Equipo</div>
+      <div class="lock-desc">Introduce la clave corporativa para acceder a las firmas oficiales de YDOIA Dental.</div>
+      <form onsubmit="checkPassword(event)">
+        <input type="password" id="pw-input" class="lock-input" placeholder="••••••••" autofocus autocomplete="off">
+        <button type="submit" class="lock-btn">Entrar al Portal</button>
+      </form>
+      <div id="lock-error" class="lock-error">Clave incorrecta. Inténtalo de nuevo.</div>
+    </div>
+  </div>
 
-      <!-- TITULAR Y SUBTITULO -->
-      <h1>Firmas YDOIA Dental</h1>
-      <div class="subtitle">Equipo Comercial (Closers & Setters)</div>
+  <!-- CONTENIDO PRIVADO DEL PORTAL -->
+  <div id="main-content">
+    <div class="container">
+      <div class="header">
+        <!-- LOGO YDOIA COMPLETO -->
+        <div class="brand-top">
+          <img src="./logo-ydoia-completo.png" alt="YDOIA" onerror="this.src='https://assets.cdn.filesafe.space/b9MZrHFEFybhjFoIFP6W/media/69f3580914daed238d4bd583.png'" />
+        </div>
 
-      <!-- EXPLICACIÓN PASO A PASO -->
-      <div class="instructions-card">
-        <div class="inst-title">📋 Instrucciones de instalación en GoHighLevel</div>
-        <div class="instruction-steps">
-          <div class="step-item">
-            <span class="step-badge">1</span>
-            <span>Haz clic en el botón azul <strong>«Copiar HTML»</strong> de tu tarjeta de firma abajo.</span>
-          </div>
-          <div class="step-item">
-            <span class="step-badge">2</span>
-            <span>Entra en tu cuenta de GoHighLevel y ve a: <strong>Configuración &gt; Mi Perfil &gt; Firma</strong>.</span>
-          </div>
-          <div class="step-item">
-            <span class="step-badge">3</span>
-            <span>Marca la casilla: <strong>«Habilitar la firma en todos los mensajes salientes»</strong>.</span>
-          </div>
-          <div class="step-item">
-            <span class="step-badge">4</span>
-            <span>En la barra de herramientas del editor de firma, haz clic en el icono <strong>Insert HTML <span class="html-tag-icon">&lt;&nbsp;&gt;</span></strong>, pega el código copiado y haz clic en <strong>Guardar</strong>.</span>
+        <!-- GOHIGHLEVEL BADGE OFICIAL -->
+        <div class="ghl-badge-wrapper">
+          <svg class="ghl-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" rx="20" fill="#0f172a"/>
+            <path d="M22 34L50 20L78 34L50 48L22 34Z" fill="#3B82F6"/>
+            <path d="M22 52L50 38L78 52L50 66L22 52Z" fill="#0EA5E9"/>
+            <path d="M22 70L50 56L78 70L50 84L22 70Z" fill="#F97316"/>
+          </svg>
+          <span class="ghl-text">GoHighLevel • Configuración de Firma Oficial</span>
+        </div>
+
+        <!-- TITULAR Y SUBTITULO -->
+        <h1>Firmas YDOIA Dental</h1>
+        <div class="subtitle">Equipo Comercial (Closers & Setters)</div>
+
+        <!-- EXPLICACIÓN PASO A PASO -->
+        <div class="instructions-card">
+          <div class="inst-title">📋 Instrucciones de instalación en GoHighLevel</div>
+          <div class="instruction-steps">
+            <div class="step-item">
+              <span class="step-badge">1</span>
+              <span>Haz clic en el botón azul <strong>«Copiar HTML»</strong> de tu tarjeta de firma abajo.</span>
+            </div>
+            <div class="step-item">
+              <span class="step-badge">2</span>
+              <span>Entra en tu cuenta de GoHighLevel y ve a: <strong>Configuración &gt; Mi Perfil &gt; Firma</strong>.</span>
+            </div>
+            <div class="step-item">
+              <span class="step-badge">3</span>
+              <span>Marca la casilla: <strong>«Habilitar la firma en todos los mensajes salientes»</strong>.</span>
+            </div>
+            <div class="step-item">
+              <span class="step-badge">4</span>
+              <span>En la barra de herramientas del editor de firma, haz clic en el icono <strong>Insert HTML <span class="html-tag-icon">&lt;&nbsp;&gt;</span></strong>, pega el código copiado y haz clic en <strong>Guardar</strong>.</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    
+      
     <div class="card" id="card-0">
       <div class="card-header">
         <div>
@@ -2534,11 +2643,38 @@
       </details>
     </div>
     
+    </div>
+
+    <div id="toast" class="toast">✓ Código HTML copiado al portapapeles</div>
   </div>
 
-  <div id="toast" class="toast">✓ Código HTML copiado al portapapeles</div>
-
   <script>
+    const ACCESS_KEY = "ydoia2026"; // Clave genérica para el equipo
+
+    function checkPassword(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('pw-input').value.trim();
+      const errorDiv = document.getElementById('lock-error');
+      
+      if (input.toLowerCase() === ACCESS_KEY.toLowerCase()) {
+        sessionStorage.setItem('ydoia_auth', 'true');
+        unlockPortal();
+      } else {
+        errorDiv.style.display = 'block';
+        document.getElementById('pw-input').value = '';
+      }
+    }
+
+    function unlockPortal() {
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+    }
+
+    // Auto-login si ya metió la clave en esta sesión
+    if (sessionStorage.getItem('ydoia_auth') === 'true') {
+      unlockPortal();
+    }
+
     function copySignature(idx) {
       const textarea = document.getElementById('code-' + idx);
       textarea.select();
